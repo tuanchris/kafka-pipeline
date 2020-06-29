@@ -20,7 +20,7 @@ conda create -n kafka-pipeline python=3.7 -y
 conda activate kafka-pipeline
 pip install -r requirements.txt
 ```
-We will we will need postgresql to connect to our source database (Postgres) and generate the streaming data. On Mac OS, you can install Postgresql using Homebrew by running:
+We will need postgresql to connect to our source database (Postgres) and generate the streaming data. On Mac OS, you can install Postgresql using Homebrew by running:
 ```
 brew install postgresql
 ```
@@ -30,9 +30,9 @@ We use docker-compose to easily start services with minimum effort. You can star
 ```
 docker-compose -f docker-compose-pg.yml up -d
 ```
-Your Postgres database should be running on port 5432 and you can check the status of the container by typing `docker ps` to a terminal. python generate_data.py
+Your Postgres database should be running on port 5432 and you can check the status of the container by typing `docker ps` to a terminal.
 ### Generate streaming data
-I have written a short scrips to generate user data using the Faker library. The script will generate 1 record per second to our Postgres database simulating a production database. You can run the script in a seperate terminal tab using:
+I have written a short script to generate user data using the Faker library. The script will generate 1 record per second to our Postgres database simulating a production database. You can run the script in a separate terminal tab using:
 ```
 python generate_data.py
 ```
@@ -149,10 +149,10 @@ Some notable configs:
 - `topics`: topics to read data from
 - `format.class`: data format. You can choose from `JSON`, `Avro` and `Parquet`
 
-And voila, your pipeline is now complete. With a couple of docker-compose configurations files and connectors configurations, you have created a streaming pipeline that enable near real-time data analytics capability. Pretty powerful stuff! Kafka and its components are horizontally scalable. You can add more components to process real-time data such as Spark streaming, KSQL, Beam, or Flink. 
+And voila, your pipeline is now complete. With a couple of docker-compose configurations files and connectors configurations, you have created a streaming pipeline that enable near real-time data analytics capability. Pretty powerful stuff! Kafka and its components are horizontally scalable. You can add more components to process real-time data such as Spark streaming, KSQL, Beam, or Flink.
 
-## Clean up 
-If you don't have any other docker containers running, you can shut down the ones for this project with the following command: 
+## Clean up
+If you don't have any other docker containers running, you can shut down the ones for this project with the following command:
 ```
 docker stop $(docker ps -aq)
 ```
@@ -160,4 +160,3 @@ Optionally, you can clean up docker images downloaded locally by rinning:
 ```
 docker system prune
 ```
-
