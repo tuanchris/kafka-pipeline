@@ -1,5 +1,4 @@
 Faker
-psycopg2
 ipython
 pandas
 numpy

@@ -5,7 +5,8 @@ Kafka has risen in popularity lately as businesses rely on it to power mission-c
 In this project, we will simulate a streaming ingestion pipeline using Kafka, and Kafka connect. Assuming we have our production database running on Postgres and we want to stream the Users table that contains customer data to different sources for different purposes. Kafka and Kafka Connect is perfect for this use case. In our simulation, we will write data to MySQL for other applications and S3 for our data lake ingestion.
 
 ## Project architecture
-
+![architecture](/images/architecture.png)
+For our example, we will use Kafka connect to capture changes in the Users table from our production database on-premise and write to a Kafka topic. Two connectors will subscribe to the topic above, and write any changes to our email service's MySQL database as well as the S3, our data lake.
 ## Instructions
 ### Clone the repo to your local machine
 
@@ -48,8 +49,6 @@ Great, now that we have a production database running with data streaming to it,
 - Kafka Connect: Kafka Connect is a framework for connecting Kafka with external systems such as databases, key-value stores, search indexes, and file systems.
 - Kafdrop: Kafdrop is an opensource web UI fro viewing Kafka topics and browsing consumer groups. This will make inspecting and debugging our messages much easier.  
 
-
-
 We can start all of these services by running:
 ```
 docker-compose -f docker-compose-kafka.yml up -d
@@ -79,7 +78,7 @@ curl -i -X PUT http://localhost:8083/connectors/SOURCE_POSTGRES/config \
 
 ```
 When you see `HTTP/1.1 201 Created`, the connector is successfully created.
-What this command does is sending a JSON message with our configurations to the Kafka Connect instance. I will explain some of the configurations here, but you can reference the full list of configs (here)[https://docs.confluent.io/current/connect/kafka-connect-jdbc/source-connector/source_config_options.html]
+What this command does is sending a JSON message with our configurations to the Kafka Connect instance. I will explain some of the configurations here, but you can reference the full list of configs [here](https://docs.confluent.io/current/connect/kafka-connect-jdbc/source-connector/source_config_options.html)
 - `connector.class`: we are using the JDBC source connector to connect to our production database and extract data.
 - `connection.url`: the connection string to our source database. Since we are using the docker's internal network, the database address is Postgres. If you are connecting to external databases, replace Postgres with the database's IP.
 - `connection.user` & `connection.password`:  credentials for our database
@@ -89,10 +88,9 @@ What this command does is sending a JSON message with our configurations to the 
 - `table.whitelist`: list of table names to look for in our database. You can also set the `query` parameter to use a custom query.
 
 With the Kafdrop instance running, you can open a browser and go to `localhost:9000` to see our `P_USERS` topic.
-[image]
+![kafdrop1](/images/kafdrop1.png)
 You can go into the topic and see some sample messages on our topic.
-[image]
-
+![kafdrop2](/images/kafdrop2.png)
 ### Create sink connectors
 We will create two sink connectors (Mysql and S3) with our data already in Kafka. Let's start first with Mysql. Start the Mysql database by running:
 ```
