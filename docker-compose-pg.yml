@@ -1,0 +1,15 @@
+---
+version: "3"
+
+services:
+  postgres_49ee:
+    image: postgres:9.1
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: TEST 
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: TEST
+
